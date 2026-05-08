@@ -1,0 +1,9 @@
+quipu_dbt:
+  outputs:
+    dev:
+      type: duckdb
+      path: "quipu.duckdb"
+      extensions:
+        - iceberg
+        - spatial
+  target: dev

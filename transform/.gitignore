@@ -1,0 +1,5 @@
+target/
+dbt_packages/
+logs/
+quipu.duckdb
+quipu.duckdb.wal

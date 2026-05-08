@@ -1,0 +1,33 @@
+SELECT
+  TRY_CAST(TRY_CAST(IVR_NUMBER AS DOUBLE) AS INTEGER) AS ivr_number
+  , APPLICATION_NUMBER AS application_number
+  , STATUS AS status
+  , TYPE AS type
+  , DESCRIPTION AS description
+  , NULLIF(WORK,'nan') AS work
+  , ADDRESS AS address
+  , TRY_CAST(SET_UP AS TIMESTAMP) AS set_up_at
+  , TRY_CAST(UNDER_REVIEW AS TIMESTAMP) AS under_review_at
+  , TRY_CAST(ISSUED AS TIMESTAMP) AS issued_at
+  , TRY_CAST(FINAL AS TIMESTAMP) AS final_at
+  , NEIGHBORHOOD AS neighborhood
+  , NEIGHBORHOOD_DISTRICT AS neighborhood_coalition
+  , BUSINESS_ASSOCIATION AS business_association
+  , OCCUPANCY_GROUP AS occupancy_group
+  , CONSTRUCTION_TYPE AS construction_type
+  , CASE WHEN NOT isnan(CAST(SUBMITTED_VALUATION AS DOUBLE)) THEN CAST(SUBMITTED_VALUATION AS DOUBLE) END AS submitted_valuation_amt
+  , CASE WHEN NOT isnan(CAST(FINAL_VALUATION AS DOUBLE)) THEN CAST(FINAL_VALUATION AS DOUBLE) END AS final_valuation_amt
+  , CASE WHEN NOT isnan(CAST(NEW_UNITS AS DOUBLE)) THEN CAST(NEW_UNITS AS DOUBLE) END AS new_units_amt
+  , CASE WHEN NOT isnan(CAST(TOTAL_SQFT AS DOUBLE)) THEN CAST(TOTAL_SQFT AS DOUBLE) END AS total_sqft_amt
+  , CASE WHEN CAST(TOTAL_SQFT AS DOUBLE) > 0 THEN True ELSE FALSE END AS has_square_footage
+  , CASE WHEN NOT isnan(CAST(STORIES AS DOUBLE)) THEN CAST(STORIES AS DOUBLE) END AS stories_amt
+  , TRY_CAST(TRY_CAST(customer AS DOUBLE) AS INTEGER) AS customer
+  , CASE WHEN NOT isnan(CAST(lon AS DOUBLE)) THEN CAST(lon AS DOUBLE) END AS longitude
+  , CASE WHEN NOT isnan(CAST(lat AS DOUBLE)) THEN CAST(lat AS DOUBLE) END AS latitude
+  , ST_Point(
+      CASE WHEN NOT isnan(CAST(lon AS DOUBLE)) THEN CAST(lon AS DOUBLE) END,
+      CASE WHEN NOT isnan(CAST(lat AS DOUBLE)) THEN CAST(lat AS DOUBLE) END
+    ) AS location
+  , TRY_CAST(quipu_updated_at AS TIMESTAMP) AS quipu_updated_at
+FROM {{ source('re_permits_loader_pdx', 'permits_loader') }}
+WHERE TRUE

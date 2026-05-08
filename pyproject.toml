@@ -1,0 +1,16 @@
+[project]
+name = "quipu-data-generator"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "pvc",
+    "beautifulsoup4",
+    "dbt-core>=1.8",
+    "dbt-duckdb>=1.9",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+pvc = { path = "../pvc", editable = true }

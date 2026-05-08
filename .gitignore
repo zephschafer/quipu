@@ -1,0 +1,16 @@
+*.pyc
+*.csv
+.venv/
+venv/
+warehouse/
+__pycache__/
+monitoring/.ipynb_checkpoints/*
+seeds/temp/.ipynb_checkpoints/*
+transform/target/
+transform/dbt_packages/
+transform/logs/
+transform/quipu.duckdb
+transform/quipu.duckdb.wal
+data/
+project.yml
+*.egg-info/

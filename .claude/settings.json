@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/bin/python -c ' *)",
+      "Bash(uv run *)",
+      "Bash(sed -i '' 's/self\\\\.CATALOG/self.catalog/g' /Users/zephschafer/Documents/GitHub/quipu-data-generator/quipu.py)",
+      "Bash(sed -i '' 's/self\\\\._API_KEY/self.api_key/g' /Users/zephschafer/Documents/GitHub/quipu-data-generator/quipu.py)",
+      "Bash(sed -i '' 's/self\\\\.VALID_REGIONS/self.valid_regions/g' /Users/zephschafer/Documents/GitHub/quipu-data-generator/quipu.py)",
+      "Read(//Users/zephschafer/.quipu/**)",
+      "Bash(grep -E \"\\\\.\\(py|yml|sql|jinja2\\)$\")",
+      "Bash(python -c \"import pydantic; print\\(pydantic.VERSION\\)\")",
+      "Bash(python3 -c \"import pydantic; print\\(pydantic.VERSION\\)\")",
+      "Bash(pip install *)",
+      "Read(//Users/zephschafer/**)",
+      "Bash(xargs ls *)",
+      "Bash(python3 -m json.tool)",
+      "Bash(xargs python3 *)",
+      "Bash(python3 -c ' *)",
+      "Bash(/Users/zephschafer/Documents/GitHub/quipu-data-generator/.venv/bin/python -c ' *)",
+      "Bash(/Users/zephschafer/Documents/GitHub/quipu-data-generator/.venv/bin/python -c \"import duckdb; print\\(duckdb.__version__\\)\")",
+      "Bash(uv --directory .. run pvc validate all)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git rm *)",
+      "Bash(git restore *)",
+      "Bash(git -C /Users/zephschafer/Documents/GitHub/quipu-data-generator status --short)"
+    ],
+    "additionalDirectories": [
+      "/Users/zephschafer/Documents/GitHub/quipu-data-generator/api/gcp",
+      "/Users/zephschafer/Documents/GitHub/quipu-data-generator/.claude",
+      "/Users/zephschafer/Documents/GitHub/pvc",
+      "/Users/zephschafer/Documents/GitHub/pvc/.claude",
+      "/Users/zephschafer/Documents/GitHub/quipu-data-generator/scrapers"
+    ]
+  }
+}

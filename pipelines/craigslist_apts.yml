@@ -1,0 +1,74 @@
+version: 1
+name: craigslist_apts
+description: Apartment rental listings scraped from Craigslist Oregon cities
+
+source:
+  type: python
+  module: connectors.craigslist_apts
+  function: fetch_region
+
+  params:
+    - name: region
+      type: string
+
+    - name: max_records
+      type: integer
+      value: 999999
+
+  iterate:
+    - param: region
+      type: categorical
+      values: [portland, eugene, salem, bend, corvallis]
+
+schema:
+  columns:
+    - name: region
+      path: region
+      type: string
+
+    - name: url
+      path: url
+      type: string
+
+    - name: posted
+      path: posted
+      type: string
+
+    - name: price
+      path: price
+      type: integer
+
+    - name: bedrooms
+      path: bedrooms
+      type: float
+
+    - name: sqft
+      path: sqft
+      type: float
+
+    - name: neighborhood
+      path: neighborhood
+      type: string
+
+    - name: title
+      path: title
+      type: string
+
+    - name: address
+      path: address
+      type: string
+
+    - name: post_description
+      path: post_description
+      type: string
+
+    - name: latitude
+      path: latitude
+      type: float
+
+    - name: longitude
+      path: longitude
+      type: float
+
+build:
+  strategy: append

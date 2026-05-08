@@ -1,0 +1,125 @@
+version: 2
+
+models:
+  - name: permits
+    description: "All permit records issued or under review"
+    columns:
+      - name: ivr_number
+        description: "The unique identifier for the table"
+        tests:
+          - unique
+          - not_null
+      - name: application_number
+        description: "BDS's application number for the permit"
+      - name: status
+        description: "Current approval status of the permit (e.g. 'Under Review', 'Issued', 'Final', 'Expired', etc.)"
+      - name: type
+        description: "Type of permit application (e.g. 'Short Term Rental Multi-Dwelling', 'DA - Design Advice Request', 'Pre-Prmt Zoning Plan Chck', etc.)"
+      - name: description
+        description: "Description of the work provided by the permit applicant"
+      - name: work_type
+        description: "Nature of the work (e.g. 'New Construction', 'Addition/Alteration', 'Repair Fire Damage', etc.)"
+      - name: address
+        description: "Address of the location of the construction"
+      - name: set_up_at
+        description: "Time at which the permit application was set up with the City"
+      - name: under_review_at
+        description: "Time at which the permit application began to be under review by the City"
+      - name: issued_at
+        description: "Time at which building permission was granted to the applicant"
+      - name: final_at
+        description: "Time at which all associated subpermits were approved"
+      - name: neighborhood
+        description: "Neighborhood association within whose boundaries the work would occur"
+      - name: neighborhood_coalition
+        description: "Neighborhood coalition within whose boundaries the work would occur (if exists)"
+      - name: business_association
+        description: "Business association within whose boundaries the work would occur (if exists)"
+      - name: occupancy_group
+        description: "Type of occupancy that the affected building has/will have"
+
+  - name: permits_cleaned
+    description: "Primary building permits, deduplicated, and with cleaned type categories"
+    columns:
+      - name: ivr_number
+        description: "The unique identifier for the table"
+        tests:
+          - unique
+          - not_null
+      - name: application_number
+        description: "BDS's application number for the permit"
+      - name: status
+        description: "Current approval status of the permit (e.g. 'Under Review', 'Issued', 'Final', 'Expired', etc.)"
+      - name: type
+        description: "Type of permit application"
+      - name: description
+        description: "Description of the work provided by the permit applicant"
+      - name: work_type
+        description: "Nature of the work (e.g. 'New Construction', 'Addition/Alteration', 'Repair Fire Damage', etc.)"
+      - name: address
+        description: "Address of the location of the construction"
+      - name: set_up_at
+        description: "Time at which the permit application was set up with the City"
+      - name: under_review_at
+        description: "Time at which the permit application began to be under review by the City"
+      - name: issued_at
+        description: "Time at which building permission was granted to the applicant"
+      - name: final_at
+        description: "Time at which all associated subpermits were approved"
+      - name: last_status_update_at
+        description: "Time of the greatest value among set_up_at, under_review_at, issued_at, final_at"
+      - name: days_to_issue
+        description: "Number of days between set_up_at and issued_at"
+      - name: days_to_final
+        description: "Number of days between issued_at and final_at"
+      - name: neighborhood
+        description: "Neighborhood association within whose boundaries the work would occur"
+      - name: neighborhood_coalition
+        description: "Neighborhood coalition within whose boundaries the work would occur (if exists)"
+      - name: business_association
+        description: "Business association within whose boundaries the work would occur (if exists)"
+      - name: occupancy_group
+        description: "Type of occupancy that the affected building has/will have"
+      - name: construction_type
+        description: "Coded construction types classified by BDS"
+      - name: value
+        description: "Dollar value of all equipment, materials, labor, overhead, and profit for the work indicated on the application"
+      - name: dollars_per_sf
+        description: "Value divided by the number of square feet"
+      - name: sf_per_story
+        description: "Number of square feet divided by the number of stories"
+      - name: new_units_amt
+        description: "Number of new residential units added by the project"
+      - name: total_sqft_amt
+        description: "Total amount of area built upon"
+      - name: stories_amt
+        description: "Number of floors involved in construction"
+      - name: customer
+        description: "Customer ID"
+      - name: longitude
+        description: "Longitude of the site of building work"
+      - name: latitude
+        description: "Latitude of the site of building work"
+      - name: location
+        description: "The geospatial coordinate, derived from the longitude and latitude"
+      - name: structure_type
+        description: "Category of the structure (e.g. 'Single Family Detached', 'Rowhouse', 'Utility', etc.)"
+        tags: ['wrapped_in_case']
+      - name: function_type
+        description: "Category of the function type for the building (e.g. 'Residential', 'Industrial', 'Healthcare', etc.)"
+        tags: ['wrapped_in_case']
+      - name: quipu_updated_at
+        description: "The last date at which the record was modified or added"
+        tags: ['wrapped_in_case']
+
+  - name: permits_by_date
+
+  - name: rolling_permits_timeseries
+
+  - name: rolling_permits_by_function_type
+
+  - name: rolling_permits_by_structure_type
+
+  - name: rolling_permits_by_work_type
+
+  - name: this_week_permits

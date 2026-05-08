@@ -1,0 +1,51 @@
+version: 1
+name: oregon_weather
+description: Daily weather for Oregon cities from Open-Meteo
+
+source:
+  type: python
+  module: connectors.oregon_weather
+  function: fetch_weather
+
+  params:
+    - name: city
+      type: string
+    - name: start_date
+      type: string
+      value: "2024-01-01"
+    - name: end_date
+      type: string
+      value: "today"
+
+  iterate:
+    - param: city
+      type: categorical
+      values: [portland, eugene, salem, bend, corvallis]
+
+schema:
+  columns:
+    - name: id
+      path: id
+      type: string
+    - name: city
+      path: city
+      type: string
+    - name: date
+      path: date
+      type: string
+    - name: temp_max_c
+      path: temp_max_c
+      type: float
+    - name: temp_min_c
+      path: temp_min_c
+      type: float
+    - name: precipitation_mm
+      path: precipitation_mm
+      type: float
+    - name: windspeed_max_kmh
+      path: windspeed_max_kmh
+      type: float
+
+build:
+  strategy: incremental
+  primary_key: id

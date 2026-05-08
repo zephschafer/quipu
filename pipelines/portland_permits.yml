@@ -1,0 +1,157 @@
+version: 1
+name: portland_permits
+description: Building permits from the PortlandMaps API
+
+source:
+  type: http
+  url: https://www.portlandmaps.com/api/permit/
+  method: GET
+
+  auth:
+    type: query_param
+    key: api_key
+    value: "{{ env.PORTLANDMAPS_API_KEY }}"
+
+  params:
+    - name: sort_field
+      type: string
+      value: ivr_number
+
+    - name: sort_order
+      type: string
+      value: asc
+
+    - name: count
+      type: integer
+      value: 1000
+
+    - name: format
+      type: string
+      value: csv
+
+    - name: date_from
+      type: date
+      format: "%m/%d/%Y"
+
+    - name: date_to
+      type: date
+      format: "%m/%d/%Y"
+
+    - name: date_type
+      type: string
+
+  iterate:
+    - params: [date_from, date_to]
+      type: date_range
+      start: "2020-01-01"
+      end: today
+      step: 1 day
+      window: 1 day
+
+    - param: date_type
+      type: categorical
+      values: [review, issued, final]
+
+  response:
+    format: csv
+
+  rate_limit:
+    requests: 500
+    per_minutes: 15
+
+schema:
+  columns:
+    - name: ivr_number
+      path: IVR_NUMBER
+      type: string
+
+    - name: application_number
+      path: APPLICATION_NUMBER
+      type: string
+
+    - name: address
+      path: ADDRESS
+      type: string
+
+    - name: neighborhood
+      path: NEIGHBORHOOD
+      type: string
+
+    - name: neighborhood_district
+      path: NEIGHBORHOOD_DISTRICT
+      type: string
+
+    - name: business_association
+      path: BUSINESS_ASSOCIATION
+      type: string
+
+    - name: description
+      path: DESCRIPTION
+      type: string
+
+    - name: work
+      path: WORK
+      type: string
+
+    - name: submitted_valuation
+      path: SUBMITTED_VALUATION
+      type: float
+
+    - name: final_valuation
+      path: FINAL_VALUATION
+      type: float
+
+    - name: total_sqft
+      path: TOTAL_SQFT
+      type: float
+
+    - name: stories
+      path: STORIES
+      type: float
+
+    - name: new_units
+      path: NEW_UNITS
+      type: float
+
+    - name: under_review
+      path: UNDER_REVIEW
+      type: string
+
+    - name: issued
+      path: ISSUED
+      type: string
+
+    - name: final
+      path: FINAL
+      type: string
+
+    - name: lon
+      transform:
+        type: crs_reproject
+        from_columns: [X_WEB_MERCATOR, Y_WEB_MERCATOR]
+        from_crs: EPSG:3857
+        to_crs: EPSG:4326
+        component: x
+
+    - name: lat
+      transform:
+        type: crs_reproject
+        from_columns: [X_WEB_MERCATOR, Y_WEB_MERCATOR]
+        from_crs: EPSG:3857
+        to_crs: EPSG:4326
+        component: y
+
+build:
+  strategy: incremental
+  primary_key: ivr_number
+
+  staging:
+    partition_param: date_type
+    table_pattern: "permits_{date_type}_loader_staging"
+
+  merge:
+    table: permits_loader
+    key: ivr_number
+    dedup:
+      type: latest_non_null
+      columns: [under_review, issued, final]

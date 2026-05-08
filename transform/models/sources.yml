@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: re_permits_loader_pdx
+    tables:
+      - name: permits_loader
+        config:
+          external_location: "iceberg_scan('{{ var('warehouse_path') }}/re_permits_loader_pdx/permits_loader')"
